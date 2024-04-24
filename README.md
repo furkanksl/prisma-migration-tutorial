@@ -122,6 +122,19 @@ By running this command, you are able to rollback to last migration if your curr
 
 `npx prisma migrate resolve --rolled-back 20240424114840_add_createdat_field_in_post_comment_table`
 
+### 5. If you already experience the db reset issue, you can set baseline of migrations with commands below:
+```
+mkdir -p prisma/migrations/0_init
+
+npx prisma migrate diff \
+--from-empty \
+--to-schema-datamodel prisma/schema.prisma \
+--script > prisma/migrations/0_init/migration.sql
+
+npx prisma migrate resolve --applied 0_init
+```
+[Baselining](https://www.prisma.io/docs/orm/prisma-migrate/workflows/baselining)
+
 ## Switch to another database (e.g. PostgreSQL, MySQL, SQL Server, MongoDB)
 
 If you want to try this example with another database than SQLite, you can adjust the the database connection in [`prisma/schema.prisma`](./prisma/schema.prisma) by reconfiguring the `datasource` block.
